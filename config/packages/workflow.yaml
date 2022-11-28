@@ -1,0 +1,47 @@
+framework:
+    workflows:
+        message_request:
+            type: 'workflow'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'status'
+            supports:
+                - App\Entity\Message
+            initial_marking: request
+            places:
+                - request
+                - prof_validation_pending
+                - prof_ok
+                - direct_validation_pending
+                - direct_ok
+                - order
+                - ordered
+                - received
+
+            transitions:
+                to_pending:
+                    from: request
+                    to:   [prof_validation_pending, direct_validation_pending]
+                to_prof_ok:
+                    guard: "is_granted('ROLE_PROF')"
+                    from: prof_validation_pending
+                    to: prof_ok
+                to_direct_ok:
+                    guard: "is_granted('ROLE_DIRECT')"
+                    from: direct_validation_pending
+                    to: direct_ok
+                to_order:
+                    guard: "is_granted('ROLE_SCHOOL')"
+                    from: [prof_ok, direct_ok]
+                    to:   order
+                to_ordered:
+                    guard: "is_granted('ROLE_SCHOOL')"
+                    from: order
+                    to:   ordered
+                to_received:
+                    guard: "is_granted('ROLE_SCHOOL')"
+                    from: ordered
+                    to:   received
+
