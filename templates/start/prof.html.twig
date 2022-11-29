@@ -7,36 +7,53 @@
 
 	{% for label, message in app.flashes(['success']) %}
 		{% for messages in message %}
-			<div class="flash-{{ label }}">
-				{{ messages }}
+			<div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md-{{ label }}" role="alert">
+				<div class="flex">
+					<div class="py-1"><svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/></svg></div>
+					<div>
+						<p class="font-bold">{{ messages }}</p>
+					</div>
+					</div>
+				</div>
 			</div>
 		{% endfor %}
 	{% endfor %}
 
-	{% for messages in message %}
 
-		<h2>{{messages.texte}}</h2>
-        <p>Demande de {{ messages.utilisateur.email }}</p>
+	{% for messages in message %}
+<figure class="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
+  <div class="pt-6 md:p-8 text-center md:text-left space-y-4">
+    <blockquote>
+
+		<h2 class="text-lg font-medium">{{messages.texte}}</h2>
+			<figcaption class="font-medium">
+				<div class="text-sky-500 dark:text-sky-400">
+					Demande de {{ messages.utilisateur.email }}
+				</div>
+			</figcaption>
 
 		{% if workflow_can(messages, 'to_prof_ok') %}
-			<a type="button" class="btn btn-blue" href="{{ path('app_change', {'id': messages.id, 'to': 'to_prof_ok'}) }}">Le professeur valide</a>
+			<a type="button" class="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" href="{{ path('app_change', {'id': messages.id, 'to': 'to_prof_ok'}) }}">Le professeur valide</a>
 		{% endif %}
 
         {% if workflow_can(messages, 'to_direct_ok') %}
-			<a type="button" class="btn btn-blue" href="{{ path('app_change', {'id': messages.id, 'to': 'to_direct_ok'}) }}">La direction valide</a>
+			<a type="button" class="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" href="{{ path('app_change', {'id': messages.id, 'to': 'to_direct_ok'}) }}">La direction valide</a>
 		{% endif %}
 
         {% if workflow_can(messages, 'to_order') %}
-			<a type="button" class="btn btn-blue" href="{{ path('app_change', {'id': messages.id, 'to': 'to_order'}) }}">Générer le résultat</a>
+			<a type="button" class="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" href="{{ path('app_change', {'id': messages.id, 'to': 'to_order'}) }}">Générer le résultat</a>
 		{% endif %}
 
         {% if workflow_can(messages, 'to_ordered') %}
-			<a type="button" class="btn btn-blue" href="{{ path('app_change', {'id': messages.id, 'to': 'to_ordered'}) }}">Le résultat est en cours</a>
+			<a type="button" class="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" href="{{ path('app_change', {'id': messages.id, 'to': 'to_ordered'}) }}">Le résultat est en cours</a>
 		{% endif %}
 
         {% if workflow_can(messages, 'to_received') %}
-			<a type="button" class="btn btn-blue" href="{{ path('app_change', {'id': messages.id, 'to': 'to_received'}) }}">Valider la reception du résultat</a>
+			<a type="button" class="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" href="{{ path('app_change', {'id': messages.id, 'to': 'to_received'}) }}">Valider la reception du résultat</a>
 		{% endif %}
+	</blockquote>
+  </div>
+</figure>
 
 		<hr>
 
